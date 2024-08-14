@@ -6,9 +6,11 @@ import { IoCartOutline, IoSearchSharp, IoPersonOutline } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa";
 import SearchPage from "../searchPage/SearchPage";
 import Name from "./Name";
+import useAuth from "../../../hooks/useAuth";
 const Navbar = () => {
-  const a = true;
-  const b = true
+
+  const {user, logOut} = useAuth()
+ 
   return (
     <div className="bg-[#232F3E] text-yellow-50">
       {/* first navbar */}
@@ -27,8 +29,11 @@ const Navbar = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2    "
             >
-              <NavLink to={"/admin/dashboard"} className="text-lg font-medium">
+              <NavLink to={"/"} className="">
                 Gift Cards
+              </NavLink>
+              <NavLink to={"/sopping"} className=" ">
+              Sopping
               </NavLink>
            
               <div className="dropdown dropdown-hover">
@@ -52,16 +57,14 @@ const Navbar = () => {
           <div className="flex flex-col md:flex-row  w-full hidden lg:block md:block gap-8">
             <NavLink
               to={"/admin/dashboard"}
-              className="text-lg font-medium mr-5"
+              className=" mr-5"
             >
               Gift Cards
             </NavLink>
-            <NavLink to={"/"} className="text-lg font-medium mr-5">
-              Tourist Mart Donates
+            <NavLink to={"/sopping"} className=" mr-5">
+              Sopping
             </NavLink>
-            <NavLink to={"/"} className="text-lg font-medium mr-5">
-              Become a supplier
-            </NavLink>
+            
             <div className="dropdown dropdown-hover mr-5 ">
               <div tabIndex={0} role="button" className=" m-1 flex items-end ">
                 <p>Help & Support</p>
@@ -86,24 +89,27 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-end text-end  space-x-4">
-          <NavLink to={"/dashboard"} className="text-4xl font-bold">
-            <IoPersonOutline />
-          </NavLink>
+         {
+          user?.email &&  <NavLink to={"/dashboard"} className="text-4xl font-bold">
+          <IoPersonOutline />
+        </NavLink>
+         }
+         
 
           
-          {a&& (
+          {user?.email && (
             <div className="text-center lg:block md:block hidden">
               <p>Welcome</p>
-              {/* <p>{session?.data?.user?.email}</p> */}
+              <p>{user?.email}</p>
             </div>
           )}
-          {a&& (
-            <NavLink to={"/signin"} className="text-lg font-medium">
+          {!user?.email && (
+            <NavLink to={"/signin"} className="">
               Singin
             </NavLink>
           )}
-          {b && (
-            <button className="" >
+          {user?.email && (
+            <button className="" onClick={()=>logOut()}>
               Logout
             </button>
           )}

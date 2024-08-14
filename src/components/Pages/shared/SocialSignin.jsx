@@ -6,10 +6,11 @@ import useAuth from '../../../hooks/useAuth';
 const SocialSignin = () => {
     
     
-    const {signInWithGoogle } = useAuth()
+    const{signInWithGoogle }  = useAuth()
     
       const handleSocialLogin = (provider) => {
-          provider === 'google' && signInWithGoogle 
+        console.log("bro ouch")
+          provider === 'google' && signInWithGoogle() 
       }
     return (
         <div className="flex gap-8 items-center justify-center mt-10">

@@ -1,13 +1,27 @@
 import React from 'react';
 import SocialSignin from '../shared/SocialSignin';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuth from '../../../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const Signin = () => {
+    const {signIn} = useAuth()
+    const navigate = useNavigate()
     const handelSingin = e =>{
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
-        console.log(email, password)
+        signIn(email, password)
+        .then(res=>{
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "SignIn Successfull",
+                showConfirmButton: false,
+                timer: 1500
+              });
+              navigate('/')
+        })
     }
     return (
         <div className="relative h-[90vh]">
@@ -18,7 +32,7 @@ const Signin = () => {
             <p className="text-2xl font-bold">
               Welcome to MughdoMart! Please Signin.
             </p>
-            <Link className="text-sm hover:text-[#8dbe3f]" href={"/signup"}>
+            <Link to={'/signup'} className="text-sm hover:text-[#8dbe3f]" >
               New menber? Register here
             </Link>
           </div>

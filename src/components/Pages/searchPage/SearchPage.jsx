@@ -1,12 +1,15 @@
 import React from 'react';
 import { IoSearchSharp } from "react-icons/io5";
+import useAuth from '../../../hooks/useAuth';
 const SearchPage = () => {
+  const {searchText, setSearchText} = useAuth()
     const handleSearchText = (e)=>{
         e.preventDefault()
         const text = e.target.searchText.value;
         // console.log(text, "thsi is text")
-      
+        setSearchText(text)
       }
+      console.log(searchText)
       return (
         <form onSubmit={handleSearchText} action="">
         <div className="lg:w-full md:w-full w-44 flex items-center lg:rounded-lg md:rounded-lg rounded-l-lg bg-slate-50 hover:outline outline-[#8dbe3f] transition-all duration-150 ease-in-out">

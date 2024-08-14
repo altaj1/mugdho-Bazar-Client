@@ -12,7 +12,7 @@ const Main = () => {
     <div className={``}>
       <Navbar />
 
-      <div className="pt-24 min-h-[calc(100vh-68px)] font-serif">
+      <div className="min-h-[calc(100vh-68px)] font-serif">
         <Outlet />
       </div>
       {/* <Footer></Footer> */}

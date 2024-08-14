@@ -30,9 +30,7 @@ const Navbar = () => {
               <NavLink to={"/admin/dashboard"} className="text-lg font-medium">
                 Gift Cards
               </NavLink>
-              <NavLink to={"/"} className="text-lg font-medium">
-                Tourist Mart Donates
-              </NavLink>
+           
               <div className="dropdown dropdown-hover">
                 <div tabIndex={0} role="button" className=" m-1">
                   Help & Support
@@ -100,8 +98,8 @@ const Navbar = () => {
             </div>
           )}
           {a&& (
-            <NavLink to={"/login"} className="text-lg font-medium">
-              Login
+            <NavLink to={"/signin"} className="text-lg font-medium">
+              Singin
             </NavLink>
           )}
           {b && (

@@ -1,6 +1,8 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../layout/Main";
+import Signin from "../components/Pages/login/Signin";
+import SignUp from "../components/Pages/login/SignUp";
 
 export const router = createBrowserRouter([
     {
@@ -10,7 +12,7 @@ export const router = createBrowserRouter([
             {}
         ]
     },
-    // { path: '/login', element: <Login /> },
-    // { path: '/signup', element: <SignUp /> },
+    { path: '/signin', element: <Signin/> },
+    { path: '/signup', element: <SignUp /> },
     // dashBoard
 ])

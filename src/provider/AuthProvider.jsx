@@ -15,7 +15,7 @@ import {
 } from 'firebase/auth'
 
 import axios from 'axios'
-import { app } from '../firebase/fIrebase.confi'
+import { app } from '../../firebase.confi'
 export const AuthContext = createContext(null)
 const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()

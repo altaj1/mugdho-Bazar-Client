@@ -1,98 +1,94 @@
-
-
 import React, { useRef, useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { MdOutlineFileDownloadDone } from "react-icons/md";
+import DatePicker from "react-datepicker";
 
+import "react-datepicker/dist/react-datepicker.css";
 
 import { useMutation } from "@tanstack/react-query";
 
 import Swal from "sweetalert2";
 import { imageUpload, priductCategories } from "./utilits/utlits";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
 
 const AddProduct = () => {
-  
+    const {user} = useAuth()
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [selectedBrandName, setSelectedBrandName] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [checkboxItem, setCheckboxItem] = useState("");
-  const [features, setFeature] = useState([]);
-  const [color, setColor] = useState([])
+  const [startDate, setStartDate] = useState(null);
+
+  const [color, setColor] = useState([]);
   const colorRef = useRef(null);
-  const featureInputRef = useRef(null);
+
   const [checkedIndex, setCheckedIndex] = useState(null);
   const [checkboxSize, setCheckBoxSize] = useState([]);
   const [coverImagePreview, setCoverImagePreview] = useState();
-  const [groupImagePreview, setGroupImagePreview] = useState([]);
+ 
   const axiosSecure = useAxiosSecure();
 
   const handleSelectBrandName = (e) => {
     const selectedIndex = e.target.selectedIndex;
     const brand = priductCategories[selectedIndex - 1]; // Adjust for "Select" option at index 0
-    console.log(brand)
+    console.log(brand);
     setSelectedBrandName(brand.brandName);
     setSelectedBrand(brand);
   };
- 
+
   const handleSelectProduct = (e) => {
     const selectedIndex = e.target.selectedIndex;
     const product = selectedBrand?.subcategories[selectedIndex - 1];
     setSelectedProduct(product);
     setCheckboxItem("");
     setCheckedIndex(null);
-  
   };
   const handleCheckboxChange = (e, idx) => {
     const item = e.target.value;
     setCheckboxItem(item);
     setCheckedIndex(idx);
   };
- 
+
   const handleCheckboxSize = (e) => {
     const size = e.target.value;
     setCheckBoxSize([...checkboxSize, size]);
   };
 
-  const handleCoverImage = async(image) => {
-    const image_url = await imageUpload(image)
-    setCoverImagePreview(image_url)
+  const handleCoverImage = async (image) => {
+    const image_url = await imageUpload(image);
+    setCoverImagePreview(image_url);
     // setCoverImagePreview(URL.createObjectURL(image));
   };
-  const handleGroupImage = async (image)=>{
-    const image_url = await imageUpload(image)
-  
-    setGroupImagePreview([...groupImagePreview, image_url])
-    // setGroupImagePreview([...groupImagePreview, URL.createObjectURL(image)])
-  }
-  const handleColer = (e)=>{
-     const data = e.target.value;
-     setColor([...color, data])
-     colorRef.current.value = "";
-  }
-  const {mutateAsync} = useMutation({
-    mutationFn:async productData =>{
-      const {data} = await axiosSecure.post(`/`, productData)
+
+  const handleColer = (e) => {
+    const data = e.target.value;
+    setColor([...color, data]);
+    colorRef.current.value = "";
+  };
+  const { mutateAsync } = useMutation({
+    mutationFn: async (productData) => {
+      const { data } = await axiosSecure.post(`/add-product`, productData);
       return data;
     },
-    onSuccess:()=>{
+    onSuccess: () => {
       Swal.fire({
         position: "top-end",
         icon: "success",
         title: "Product Post Successfully",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
-    }
-  })
+    },
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
 
-    const actualPrice = form.price.value
-    const discount = form.discount.value
-    const currentPrice = actualPrice * (1 - discount/100)
-    
+    const actualPrice = form.price.value;
+    const discount = form.discount.value;
+    const currentPrice = actualPrice * (1 - discount / 100);
+
     const productData = {
       name: form.name.value,
       description: form.description.value,
@@ -103,27 +99,30 @@ const AddProduct = () => {
       category: selectedProduct?.name,
       item: checkboxItem,
       size: checkboxSize,
-      features: features,
-      coverImage:coverImagePreview,
-      groupImage:groupImagePreview,
-      discount:discount,
-      currentPrice:currentPrice,
-      color:color,
-    //   agent:session?.data?.user?.email,
-      BrandId:selectedBrand?.id
-
+      data:startDate,
+      coverImage: coverImagePreview,
+      discount: discount,
+      currentPrice: currentPrice,
+      color: color,
+      auhtor:user?.email,
+      BrandId: selectedBrand?.id,
+      ratings: 4.5
     };
-  console.log(productData, "this is product data");
+    console.log(productData, "this is product data");
 
-    // const res = mutateAsync(productData)
-   
+    const res = mutateAsync(productData)
   };
+//   console.log(startDate)
   return (
     <>
       {/* button */}
 
       <div>
-        <form onSubmit={handleSubmit} action="" className="container mx-auto mt-10">
+        <form
+          onSubmit={handleSubmit}
+          action=""
+          className="container mx-auto mt-10"
+        >
           <div className="flex justify-between items-center mb-5 bg-[#F9F9F9] p-5 rounded-lg shadow-sm">
             <h3 className="font-semibold">Add New Product</h3>
             <button
@@ -211,7 +210,9 @@ const AddProduct = () => {
                     className=" p-2 w-full rounded-md focus:outline-none focus:ring-1 focus:ring-[#8DBE3F] hover:border hover:border-[#8DBE3F] "
                     onChange={handleSelectProduct}
                   >
-                    <option value="">{selectedBrand?.subcategories ? "Select" : ""}</option>
+                    <option value="">
+                      {selectedBrand?.subcategories ? "Select" : ""}
+                    </option>
                     {selectedBrand?.subcategories?.map((product, index) => (
                       <option
                         key={index}
@@ -227,45 +228,43 @@ const AddProduct = () => {
 
               {/* items */}
               <div>
-              <div className="lg:flex md:flex space-y-2 gap-4 pl-5 pr-5 items-center justify-center">
-                    <div className="lg:w-[50%] md:w-[50%]">
-                      <h1>
-                        {selectedProduct?.items.length == 3
-                          ? "Gender*"
-                          : "Product Items*"}
-                      </h1>
-                      {selectedProduct?.items?.map((item, idx) => (
-                        <div key={idx} className="space-x-1">
-                          <input
-                            type="checkbox"
-                            id={`checkbox-${idx}`}
-                            name="item"
-                            value={item}
-                            onChange={(event) =>
-                              handleCheckboxChange(event, idx)
-                            }
-                            checked={checkedIndex === idx}
-                          />
-                          <label htmlFor={`checkbox-${idx}`}>{item}</label>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="lg:w-[50%] md:w-[50%]">
-                      <h1>Product Size*</h1>
-                      {selectedProduct?.size?.map((size, idx) => (
-                        <div key={idx} className="space-x-1">
-                          <input
-                            type="checkbox"
-                            id={`checkbox-${idx}`}
-                            name="item"
-                            value={size}
-                            onChange={(event) => handleCheckboxSize(event, idx)}
-                          />
-                          <label htmlFor={`checkbox-${idx}`}>{size}</label>
-                        </div>
-                      ))}
-                    </div>
+                <div className="lg:flex md:flex space-y-2 gap-4 pl-5 pr-5 items-center justify-center">
+                  <div className="lg:w-[50%] md:w-[50%]">
+                    <h1>
+                      {selectedProduct?.items.length == 3
+                        ? "Gender*"
+                        : "Product Items*"}
+                    </h1>
+                    {selectedProduct?.items?.map((item, idx) => (
+                      <div key={idx} className="space-x-1">
+                        <input
+                          type="checkbox"
+                          id={`checkbox-${idx}`}
+                          name="item"
+                          value={item}
+                          onChange={(event) => handleCheckboxChange(event, idx)}
+                          checked={checkedIndex === idx}
+                        />
+                        <label htmlFor={`checkbox-${idx}`}>{item}</label>
+                      </div>
+                    ))}
                   </div>
+                  <div className="lg:w-[50%] md:w-[50%]">
+                    <h1>Product Size*</h1>
+                    {selectedProduct?.size?.map((size, idx) => (
+                      <div key={idx} className="space-x-1">
+                        <input
+                          type="checkbox"
+                          id={`checkbox-${idx}`}
+                          name="item"
+                          value={size}
+                          onChange={(event) => handleCheckboxSize(event, idx)}
+                        />
+                        <label htmlFor={`checkbox-${idx}`}>{size}</label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
             {/* upload img */}
@@ -274,7 +273,6 @@ const AddProduct = () => {
               {/* images */}
               <div className="p-5">
                 <div>
-
                   <label className="flex flex-col  items-center rounded-lg shadow-lg bg-[#FCF7F1]">
                     <input
                       type="file"
@@ -288,7 +286,10 @@ const AddProduct = () => {
                     />
                     <div className="h-64 object-cover  rounded-lg  flex items-center justify-center">
                       {coverImagePreview ? (
-                        <img className=" h-64 w-64 object-cover rounded-lg" src={coverImagePreview} />
+                        <img
+                          className=" h-64 w-64 object-cover rounded-lg"
+                          src={coverImagePreview}
+                        />
                       ) : (
                         <p className="text-6xl opacity-50 ">
                           <span>
@@ -299,28 +300,7 @@ const AddProduct = () => {
                     </div>
                   </label>
                   {/* group images */}
-                  <label className="flex flex-col items-center mt-8 rounded-lg shadow-lg bg-[#FCF7F1]">
-                    <input
-                      type="file"
-                      className="text-sm cursor-pointer w-36 hidden bg-slate-200"
-                      name="image"
-                      accept="image/*"
-                      id="image"
-                      onChange={(e) => handleGroupImage(e.target.files[0])}
-                      hidden
-                    />
-                    <div className="h-28 object-cover overflow-auto rounded-lg gap-2 flex items-center ">
-                      {/* {groupImagePreview?.map(img=>(
-                        <img className=" object-cover h-28 w-28 rounded-lg" src={img} />
-                      ))}
-                      <p className="text-3xl opacity-50 ml-2">
-                          <span>
-                            <IoIosAddCircleOutline />
-                          </span>
-                        </p> */}
-                        {/* clender */}
-                    </div>
-                  </label>
+              
                 </div>
               </div>
               {/* prices brand */}
@@ -336,39 +316,47 @@ const AddProduct = () => {
                   />
                 </div>
                 <div className="flex flex-col pl-5 pr-5 lg:w-[50%]  space-y-1">
-                  <label htmlFor="">Brand</label>
+                 
+                      <label htmlFor="">Discount</label>
                   <input
-                    className=" rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-[#8DBE3F] hover:border hover:border-[#8DBE3F]"
-                    placeholder="Enter Product Brand"
-                    name="brand"
-                    id=""
+                    type="number"
+                    placeholder="Enter Discount %"
+                    name="discount"
+                    className="p-2 w-full rounded-md focus:outline-none focus:ring-1 focus:ring-[#8DBE3F] hover:border hover:border-[#8DBE3F]"
                   />
                 </div>
               </div>
               {/* discount color */}
               <div className="lg:flex  justify-between mt-2 ">
                 <div className="flex flex-col pl-5 pr-5 space-y-1 lg:w-[50%]">
-                  <label htmlFor="">Discount</label>
-                  <input
-                    type="number"
-                    placeholder="Enter Discount %"
-                    
-                    name="discount"
-                    className="p-2 w-full rounded-md focus:outline-none focus:ring-1 focus:ring-[#8DBE3F] hover:border hover:border-[#8DBE3F]"
-                  />
+                <label htmlFor="">Select start date</label>
+                  <DatePicker
+                        className="bg-slate-200 mr-10 p-2 rounded-md"
+                        required
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        selectsStart
+                        startDate={startDate}
+                       
+                        placeholderText="Select start date"
+                      />
                 </div>
                 <div className="flex flex-col pl-5 pr-5 lg:w-[50%]  space-y-1">
                   <label htmlFor="">Colors</label>
                   <div className="w-[100%] flex focus:outline-none focus:ring-1 focus:ring-[#8DBE3F] hover:border hover:border-[#8DBE3F] rounded-md">
                     <input
-                        type="text"
-                        placeholder="Enter Product Colors"
-                        name="color"
-                        onBlur={handleColer}
-                        ref={colorRef}
-                        className="p-2 w-full rounded-l-md focus:outline-none"
-                      /> <div className="bg-slate-200 px-2 rounded-r-md flex items-center justify-center"> <IoIosAddCircleOutline /></div>
+                      type="text"
+                      placeholder="Enter Product Colors"
+                      name="color"
+                      onBlur={handleColer}
+                      ref={colorRef}
+                      className="p-2 w-full rounded-l-md focus:outline-none"
+                    />{" "}
+                    <div className="bg-slate-200 px-2 rounded-r-md flex items-center justify-center">
+                      {" "}
+                      <IoIosAddCircleOutline />
                     </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -11,6 +11,7 @@ import AdminMenu from './Menu/AdminMenu'
 
 import { MdOutlineLeaderboard } from "react-icons/md";
 import useAuth from '../../../hooks/useAuth'
+import Name from '../navbar/Name'
 const Sidebar = () => {
   const { logOut } = useAuth()
   const [isActive, setActive] = useState(false)
@@ -31,7 +32,7 @@ const Sidebar = () => {
         <div>
           <div className='block cursor-pointer p-4 font-bold'>
             <Link to='/'>
-             MugdhoMart
+            <Name></Name>
             </Link>
           </div>
         </div>
@@ -54,8 +55,9 @@ const Sidebar = () => {
           <div>
             <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-rose-100 mx-auto'>
             <div className="flex items-center justify-center">
-          <Link to='/'>Mugdho Mart</Link>
-          <h1 className="text-2xl font-bold lg:block hidden inline-block  text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 from-10% via-sky-500 via-30% to-emerald-500 to-90% ...">BrainStrom</h1>
+          <Link to='/'>
+        <Name></Name>
+          </Link>
         </div>
               
             </div>

@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { GiHamburgerMenu } from "react-icons/gi";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { IoCartOutline, IoSearchSharp, IoPersonOutline } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa";
@@ -119,9 +119,9 @@ const Navbar = () => {
       {/* {/* secoend nabbar */}
       <div className="bg-[#131921] py-2 border-b border-gray-700 lg:block md:block hidden">
         <div className="container mx-auto px-4 flex  md:flex-row items-center lg:gap-10 md:gap-10 justify-between">
-          <div>
-            <Name></Name>
-          </div>
+    
+            <Link to={'/'}><Name></Name></Link>
+   
           <div className="lg:w-full md:w-[55%] mt-2 md:mt-0 lg:block md:block hidden">
             <SearchPage />
           </div>

@@ -5,6 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
 import { GrLinkNext } from "react-icons/gr";
 import { GrLinkPrevious } from "react-icons/gr";
+import Card from "./card";
+import { Link } from "react-router-dom";
+import { AiOutlineBars } from "react-icons/ai";
 
 const Sopping = () => {
   const { searchText, setSearchText } = useAuth();
@@ -16,9 +19,10 @@ const Sopping = () => {
   const [categoryName, setCategoryName] = useState("");
   const [price, setPrice] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(9);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
   const [count, setCount] = useState(0);
   const [productsData, setProductsData] = useState([]);
+  const [isActive, setActive] = useState(false)
   const numberOfPages = Math.ceil(count / itemsPerPage);
   const pages = [...Array(numberOfPages).keys()];
 
@@ -72,7 +76,7 @@ const Sopping = () => {
       const { data } = await axiosCommon.get(
         `/get-all-product?productBrand=${productBrand}&categoryName=${categoryName}&price=${price}&page=${currentPage}&size=${itemsPerPage}&searchText=${searchText}`
       );
-      console.log(data);
+      setProductsData(data)
       return data;
     },
   });
@@ -94,18 +98,43 @@ const Sopping = () => {
    ( value == "HightoLow" ) {
     const sortedByHighToLow = products.sort((a, b) => parseFloat(b.currentPrice) - parseFloat(a.currentPrice));
     setProductsData(sortedByHighToLow)
+   }else{
+    setProductsData(products)
    }
   }
-  console.log(productsData)
+  const handleToggle = () => {
+    setActive(!isActive)
+  }
+  
   return (
-    <div className="container mx-auto">
-      <div>
-        {/* checked box */}
+    <div>
+       {/* Small Screen Navbar */}
+       <div className='bg-gray-100 text-gray-800 flex justify-between md:hidden'>
         <div>
+          <div className='block cursor-pointer p-4 font-bold'>
+            {/* <Link to='/'>
+            <Name></Name>
+            </Link> */}
+          </div>
+        </div>
+
+        <button
+          onClick={handleToggle}
+          className='mobile-menu-button p-4 focus:outline-none focus:bg-gray-200'
+        >
+          <AiOutlineBars className='h-5 w-5' />
+        </button>
+      </div>
+      <div className="container mx-auto mt-10">
+      <div className="flex justify-between  gap-5">
+        {/* checked box */}
+        <div className={` mt-5 z-10  flex flex-col overflow-x-hidden d lg:w-[20%] md:w-[30%] inset-y-0 left-0 transform ${
+            isActive && '-translate-x-full'
+          }  md:translate-x-0  transition duration-200 ease-in-out `}>
           {/* sorting */}
           <div className="dropdown dropdown-hover">
             <div tabIndex={0} role="button" className="bg-[#8dbe3f] py-2 px-3  rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">
-              Hover
+            Sorting
             </div>
             <ul
               tabIndex={0}
@@ -113,6 +142,7 @@ const Sopping = () => {
             >
              <button onClick={()=>handkeSorting("LowtoHigh")} className="bg-[#8dbe3f] py-2  rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">Low to High</button>
              <button onClick={()=>handkeSorting("HightoLow")} className="bg-[#8dbe3f] py-2 mt-1 rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">High to Low</button>
+             <button onClick={()=>handkeSorting("reset")} className="bg-[#8dbe3f] py-2 mt-1 rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">Reset</button>
             </ul>
           </div>
           <>
@@ -166,7 +196,10 @@ const Sopping = () => {
           ))}
         </div>
         {/* product */}
-        <div></div>
+        <div className="lg:grid md:grid lg:grid-cols-4  md:grid-cols-2  gap-5 ">
+         {!productsData.length? <div>No product here</div>:   productsData.map((product, idx)=>(<Card key={idx} product={product}></Card>))}
+        
+        </div>
       </div>
       {/* pagination */}
       <div className="pagination join flex items-center justify-center p-16">
@@ -199,6 +232,8 @@ const Sopping = () => {
         </button>
       </div>
     </div>
+    </div>
+   
   );
 };
 

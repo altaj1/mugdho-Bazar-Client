@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Card = ({ product }) => {
   console.log(product);
@@ -44,9 +45,9 @@ const Card = ({ product }) => {
           <div className=" rounded-r-xl px-2 badge-outline bg-red-600 text-white font-medium">
             {discount}% off
           </div>
-          <div className="badge badge-outline bg-[#8dbe3f] hover:bg-[#5B8021] hover:text-white font-medium">
+          <Link to={`/product-detail/${_id}`} className="badge badge-outline bg-[#8dbe3f] hover:bg-[#5B8021] hover:text-white font-medium">
             See preview
-          </div>
+          </Link >
         </div>
       </div>
     </div>

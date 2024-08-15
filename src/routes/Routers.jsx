@@ -6,6 +6,7 @@ import SignUp from "../components/Pages/login/SignUp";
 import Sopping from "../components/Pages/Sopping/Sopping";
 import DashboardLayout from "../layout/DashboardLayout";
 import AddProduct from "../components/Pages/Admin/AddProduct";
+import ProductDetail from "../components/Pages/productDetail/ProductDetail";
 
 export const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
                 path:'/sopping',
                 element:<Sopping></Sopping>
             },
+            {
+                path:'/product-detail/:id',
+                element:<ProductDetail></ProductDetail>
+            }
         ]
     },
     { path: '/signin', element: <Signin/> },

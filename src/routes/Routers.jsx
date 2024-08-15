@@ -5,6 +5,7 @@ import Signin from "../components/Pages/login/Signin";
 import SignUp from "../components/Pages/login/SignUp";
 import Sopping from "../components/Pages/Sopping/Sopping";
 import DashboardLayout from "../layout/DashboardLayout";
+import AddProduct from "../components/Pages/Admin/AddProduct";
 
 export const router = createBrowserRouter([
     {
@@ -21,9 +22,15 @@ export const router = createBrowserRouter([
     { path: '/signup', element: <SignUp /> },
     // dashBoard
     {
-        path: '/dashboard',
+    path: '/dashboard',
     element: (
         <DashboardLayout />
     ),
+    children:[
+        {
+            path:'/dashboard',
+            element:<AddProduct></AddProduct>
+        }
+    ]
     }
 ])

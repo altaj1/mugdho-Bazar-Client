@@ -1,18 +1,20 @@
-"use client";
-import { spotCategories } from "@/lib/spotCategories/spotCategories";
+
+
 import React, { useRef, useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { MdOutlineFileDownloadDone } from "react-icons/md";
-import { imageUpload } from "../HomePages/utilits";
-import { useSession } from "next-auth/react";
+
+
 import { useMutation } from "@tanstack/react-query";
-import useAxiosSecure from "@/lib/hooks/apiHooks/useAxiosSecure";
+
 import Swal from "sweetalert2";
+import { imageUpload, priductCategories } from "./utilits/utlits";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddProduct = () => {
-  const session = useSession()
-  const [selectedSpot, setSelectedSpot] = useState(null);
-  const [selectedSpotName, setSelectedSpotName] = useState("");
+  
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [selectedBrandName, setSelectedBrandName] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [checkboxItem, setCheckboxItem] = useState("");
   const [features, setFeature] = useState([]);
@@ -25,35 +27,28 @@ const AddProduct = () => {
   const [groupImagePreview, setGroupImagePreview] = useState([]);
   const axiosSecure = useAxiosSecure();
 
-  const handleSelectCategory = (e) => {
+  const handleSelectBrandName = (e) => {
     const selectedIndex = e.target.selectedIndex;
-    const spot = spotCategories[selectedIndex - 1]; // Adjust for "Select" option at index 0
-    setSelectedSpotName(spot?.category);
-    setSelectedSpot(spot);
+    const brand = priductCategories[selectedIndex - 1]; // Adjust for "Select" option at index 0
+    console.log(brand)
+    setSelectedBrandName(brand.brandName);
+    setSelectedBrand(brand);
   };
+ 
   const handleSelectProduct = (e) => {
     const selectedIndex = e.target.selectedIndex;
-    const product = selectedSpot?.subcategories[selectedIndex - 1];
+    const product = selectedBrand?.subcategories[selectedIndex - 1];
     setSelectedProduct(product);
     setCheckboxItem("");
     setCheckedIndex(null);
-    if (product?.name == "Gadgets & Gear") {
-      setCheckBoxSize([]);
-    }
-    if (product?.name !== "Gadgets & Gear") {
-      setFeature([]);
-    }
+  
   };
   const handleCheckboxChange = (e, idx) => {
     const item = e.target.value;
     setCheckboxItem(item);
     setCheckedIndex(idx);
   };
-  const handleFeature = (e) => {
-    const feature = e.target.value;
-    setFeature([...features, feature]);
-    featureInputRef.current.value = "";
-  };
+ 
   const handleCheckboxSize = (e) => {
     const size = e.target.value;
     setCheckBoxSize([...checkboxSize, size]);
@@ -77,7 +72,7 @@ const AddProduct = () => {
   }
   const {mutateAsync} = useMutation({
     mutationFn:async productData =>{
-      const {data} = await axiosSecure.post(`/agent/api/manage-product`, productData)
+      const {data} = await axiosSecure.post(`/`, productData)
       return data;
     },
     onSuccess:()=>{
@@ -104,7 +99,7 @@ const AddProduct = () => {
       bracode: form.bracode.value,
       quantity: form.quantity.value,
       price: actualPrice,
-      SpotName: selectedSpotName,
+      BrandName: selectedBrandName,
       category: selectedProduct?.name,
       item: checkboxItem,
       size: checkboxSize,
@@ -114,13 +109,13 @@ const AddProduct = () => {
       discount:discount,
       currentPrice:currentPrice,
       color:color,
-      agent:session?.data?.user?.email,
-      spotId:selectedSpot?.id
+    //   agent:session?.data?.user?.email,
+      BrandId:selectedBrand?.id
 
     };
   console.log(productData, "this is product data");
 
-    const res = mutateAsync(productData)
+    // const res = mutateAsync(productData)
    
   };
   return (
@@ -190,20 +185,20 @@ const AddProduct = () => {
               {/* categoris */}
               <div className="lg:flex md:flex justify-between pl-5 pr-5 gap-4">
                 <div className="lg:w-[50%] md:w-[50%] space-y-1">
-                  <h1>Spot Category*</h1>
+                  <h1>Select Brand Name*</h1>
                   <select
                     required
                     className=" p-2 w-full bg-white rounded-md focus:outline-none focus:ring-1 focus:ring-[#8DBE3F] hover:border hover:border-[#8DBE3F] "
-                    onChange={handleSelectCategory}
+                    onChange={handleSelectBrandName}
                   >
                     <option value="">Select</option>
-                    {spotCategories?.map((spot, index) => (
+                    {priductCategories?.map((brandName, index) => (
                       <option
                         key={index}
                         className="selection:bg-gray-800 hover:cursor-pointer"
-                        value={spot.category} // Keep value for form submission if needed
+                        value={brandName.brandName} // Keep value for form submission if needed
                       >
-                        {spot.category}
+                        {brandName.brandName}
                       </option>
                     ))}
                   </select>
@@ -216,8 +211,8 @@ const AddProduct = () => {
                     className=" p-2 w-full rounded-md focus:outline-none focus:ring-1 focus:ring-[#8DBE3F] hover:border hover:border-[#8DBE3F] "
                     onChange={handleSelectProduct}
                   >
-                    <option value="">{selectedSpot?.subcategories ? "Select" : ""}</option>
-                    {selectedSpot?.subcategories?.map((product, index) => (
+                    <option value="">{selectedBrand?.subcategories ? "Select" : ""}</option>
+                    {selectedBrand?.subcategories?.map((product, index) => (
                       <option
                         key={index}
                         className="selection:bg-gray-800 hover:cursor-pointer"
@@ -232,44 +227,7 @@ const AddProduct = () => {
 
               {/* items */}
               <div>
-                {selectedProduct?.name == "Gadgets & Gear" ? (
-                  <div className="lg:flex md:flex space-y-2 gap-4 pl-5 pr-5">
-                    <div className="lg:w-[50%] md:w-[50%]">
-                      <h1>Product Items*</h1>
-                      {selectedProduct?.items?.map((item, idx) => (
-                        <div className="space-x-1">
-                          <input
-                            type="checkbox"
-                            id={`checkbox-${idx}`}
-                            name="item"
-                            value={item}
-                            onChange={(event) =>
-                              handleCheckboxChange(event, idx)
-                            }
-                            checked={checkedIndex === idx}
-                          />
-                          <label htmlFor={`checkbox-${idx}`}>{item}</label>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="lg:w-[50%] md:w-[50%] flex flex-col">
-                      <label htmlFor="">Product Features*</label>
-                    <div className="w-[100%] flex focus:outline-none focus:ring-1 focus:ring-[#8DBE3F] hover:border hover:border-[#8DBE3F] rounded-md">
-                    <input
-                        type="text"
-                        placeholder="Enter Product Features"
-                        name="feature"
-                        onBlur={handleFeature}
-                        ref={featureInputRef}
-                        className="p-2 w-full rounded-l-md focus:outline-none"
-                      /> <div className="bg-slate-200 px-2 rounded-r-md flex items-center justify-center"> <IoIosAddCircleOutline /></div>
-                    </div>
-                      
-                    </div>
-                  </div>
-                ) : (
-                  // outhers
-                  <div className="lg:flex md:flex space-y-2 gap-4 pl-5 pr-5 items-center justify-center">
+              <div className="lg:flex md:flex space-y-2 gap-4 pl-5 pr-5 items-center justify-center">
                     <div className="lg:w-[50%] md:w-[50%]">
                       <h1>
                         {selectedProduct?.items.length == 3
@@ -277,7 +235,7 @@ const AddProduct = () => {
                           : "Product Items*"}
                       </h1>
                       {selectedProduct?.items?.map((item, idx) => (
-                        <div className="space-x-1">
+                        <div key={idx} className="space-x-1">
                           <input
                             type="checkbox"
                             id={`checkbox-${idx}`}
@@ -295,7 +253,7 @@ const AddProduct = () => {
                     <div className="lg:w-[50%] md:w-[50%]">
                       <h1>Product Size*</h1>
                       {selectedProduct?.size?.map((size, idx) => (
-                        <div className="space-x-1">
+                        <div key={idx} className="space-x-1">
                           <input
                             type="checkbox"
                             id={`checkbox-${idx}`}
@@ -308,7 +266,6 @@ const AddProduct = () => {
                       ))}
                     </div>
                   </div>
-                )}
               </div>
             </div>
             {/* upload img */}

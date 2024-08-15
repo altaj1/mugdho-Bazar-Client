@@ -9,7 +9,7 @@ const AdminMenu = () => {
   return (
     <>
      
-      <MenuItem icon={BsFillMotherboardFill} label='Add Product' address='add-product' />
+      <MenuItem icon={BsFillMotherboardFill} label='Add Product' address='/dashboard'/>
     </>
   )
 }

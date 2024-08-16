@@ -11,9 +11,7 @@ const Footer = () => {
           <Link to={'/'} className="flex items-center">
             <Name></Name>
           </Link >
-          <div>
-
-          </div>
+       
           <div className="flex space-x-4">
             <a href="https://www.facebook.com/altaj.ahamedalen/" target="_blank" className="text-white hover:text-gray-400" rel="noopener noreferrer">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">

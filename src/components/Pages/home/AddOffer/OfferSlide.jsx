@@ -28,7 +28,7 @@ const OfferSlide = () => {
           <SwiperSlide key={idx}>
             <div className="">
               <div className="flex items-center bg-[#F5F5F5] p-3 rounded-lg shadow-lg justify-center">
-                <img alt="sopping" src={pd.images}></img>
+                <img alt="sopping" className="h-72" src={pd.images}></img>
               </div>
               <div className="flex items-center justify-around pt-3">
                 <div className="p-2  rounded-sm shadow-sm">

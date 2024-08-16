@@ -27,7 +27,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2    "
+              className="menu menu-sm dropdown-content mt-3 z-50 p-2  bg-base-200  text-gray-800 w-28"
             >
               <NavLink to={"/"} className="">
                 Gift Cards
@@ -40,7 +40,7 @@ const Navbar = () => {
                 <div tabIndex={0} role="button" className=" m-1">
                   Help & Support
                 </div>
-                <ul
+                {/* <ul
                   tabIndex={0}
                   className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
                 >
@@ -50,7 +50,7 @@ const Navbar = () => {
                   <li>
                     <a>Item 2</a>
                   </li>
-                </ul>
+                </ul> */}
               </div>
             </ul>
           </div>

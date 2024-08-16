@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="container mx-auto">
+    <div className="">
       <Banner></Banner>
       <AddOffer></AddOffer>
      <div className="text-center mt-20 mb-10">

@@ -23,7 +23,7 @@ const Card = ({ product }) => {
           alt="product"
         />
       </figure>
-      <div className="flex  gap-1 mt-1">
+      <div className="flex  gap-1 mt-1 font-medium">
         <p className="bg-[#FFD9D8] text-xs text-center py-1 px-1 rounded-sm">
           BigSave
         </p>

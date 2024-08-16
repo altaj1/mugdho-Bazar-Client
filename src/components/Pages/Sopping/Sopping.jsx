@@ -214,7 +214,7 @@ const Sopping = () => {
             <button
               className={`${
                 currentPage == page
-                  ? "bg-[#FF6F61] text-yellow-50 w-10 rounded-full"
+                  ? "bg-[#5B8021] text-yellow-50 w-10 rounded-full"
                   : ""
               } `}
               onClick={() => setCurrentPage(page)}

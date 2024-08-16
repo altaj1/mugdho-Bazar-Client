@@ -24,6 +24,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [searchText, setSearchText] = useState('');
+  const [counter, setCounter] = useState(0);
 
   const createUser = (email, password) => {
     setLoading(true)
@@ -111,7 +112,9 @@ const AuthProvider = ({ children }) => {
     logOut,
     updateUserProfile,
     searchText, 
-    setSearchText
+    setSearchText,
+    counter, 
+    setCounter
   }
 
   return (

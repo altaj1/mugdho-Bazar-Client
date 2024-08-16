@@ -138,11 +138,11 @@ const Sopping = () => {
             </div>
             <ul
               tabIndex={0}
-              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+              className="dropdown-content menu bg-base-100 rounded-box z-[1]  p-2 shadow"
             >
-             <button onClick={()=>handkeSorting("LowtoHigh")} className="bg-[#8dbe3f] py-2  rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">Low to High</button>
-             <button onClick={()=>handkeSorting("HightoLow")} className="bg-[#8dbe3f] py-2 mt-1 rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">High to Low</button>
-             <button onClick={()=>handkeSorting("reset")} className="bg-[#8dbe3f] py-2 mt-1 rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">Reset</button>
+             <button onClick={()=>handkeSorting("LowtoHigh")} className="  bg-[#8dbe3f] py-2  rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">Low to High</button>
+             <button onClick={()=>handkeSorting("HightoLow")} className="  bg-[#8dbe3f] py-2 mt-1 rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">High to Low</button>
+             <button onClick={()=>handkeSorting("reset")}     className="  bg-[#8dbe3f] py-2 mt-1 rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">Reset</button>
             </ul>
           </div>
           <>

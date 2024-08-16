@@ -9,7 +9,7 @@ import Name from "./Name";
 import useAuth from "../../../hooks/useAuth";
 const Navbar = () => {
 
-  const {user, logOut} = useAuth()
+  const {user, logOut, counter} = useAuth()
  
   return (
     <div className="bg-[#232F3E] text-yellow-50">
@@ -131,7 +131,7 @@ const Navbar = () => {
               <IoCartOutline className="lg:text-xl md:text-xl" />
             </p>
             <p>
-              <span>0</span> <br />
+              <span>{counter}</span> <br />
               Cart
             </p>
           </div>

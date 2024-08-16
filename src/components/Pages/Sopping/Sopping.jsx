@@ -77,9 +77,26 @@ const Sopping = () => {
         `/get-all-product?productBrand=${productBrand}&categoryName=${categoryName}&price=${price}&page=${currentPage}&size=${itemsPerPage}&searchText=${searchText}`
       );
       setProductsData(data)
+      
       return data;
     },
   });
+
+  const handleLowtoHighSorting =async ()=>{
+    setProductsData([])
+    const sortedByLowToHigh =await products.sort((a, b) => parseFloat(a.currentPrice) - parseFloat(b.currentPrice));
+    // console.log(sortedByLowToHigh)
+    setProductsData(sortedByLowToHigh)
+  
+  }
+  const  handleHightoLowSorting =async ()=>{
+    // console.log("auch")
+    setProductsData([])
+    const sortedByHighToLow =await products.sort((a, b) => parseFloat(b.currentPrice) - parseFloat(a.currentPrice));
+    // console.log(sortedByHighToLow)
+    setProductsData([])
+    setProductsData(sortedByHighToLow)
+  }
   useEffect(() => {
     axiosCommon
       .get(`/productCount`)
@@ -90,22 +107,11 @@ const Sopping = () => {
   if (isLoading) {
     return "Lodiding...";
   }
-  const handkeSorting = (value)=>{
-   if ( value == "LowtoHigh" ) {
-    const sortedByLowToHigh = products.sort((a, b) => parseFloat(a.currentPrice) - parseFloat(b.currentPrice));
-    setProductsData(sortedByLowToHigh)
-   }else if
-   ( value == "HightoLow" ) {
-    const sortedByHighToLow = products.sort((a, b) => parseFloat(b.currentPrice) - parseFloat(a.currentPrice));
-    setProductsData(sortedByHighToLow)
-   }else{
-    setProductsData(products)
-   }
-  }
+ 
   const handleToggle = () => {
     setActive(!isActive)
   }
-  
+  console.log(productsData)
   return (
     <div>
        {/* Small Screen Navbar */}
@@ -140,9 +146,9 @@ const Sopping = () => {
               tabIndex={0}
               className="dropdown-content menu bg-base-100 rounded-box z-[1]  p-2 shadow"
             >
-             <button onClick={()=>handkeSorting("LowtoHigh")} className="  bg-[#8dbe3f] py-2  rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">Low to High</button>
-             <button onClick={()=>handkeSorting("HightoLow")} className="  bg-[#8dbe3f] py-2 mt-1 rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">High to Low</button>
-             <button onClick={()=>handkeSorting("reset")}     className="  bg-[#8dbe3f] py-2 mt-1 rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">Reset</button>
+             <button onClick={handleLowtoHighSorting} className="  bg-[#8dbe3f] py-2  rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">Low to High</button>
+             <button onClick={handleHightoLowSorting} className="  bg-[#8dbe3f] py-2 mt-1 rounded-lg  hover:bg-[#5b8021] hover:text-yellow-50 transition-all duration-300 ease-in-out">High to Low</button>
+            
             </ul>
           </div>
           <>
@@ -198,6 +204,9 @@ const Sopping = () => {
         {/* product */}
         <div className="lg:grid md:grid lg:grid-cols-4  md:grid-cols-2  gap-5 ">
          {!productsData.length? <div>No product here</div>:   productsData.map((product, idx)=>(<Card key={idx} product={product}></Card>))}
+         {/* {
+          productsData.map((product, idx)=>(<Card key={idx} product={product}></Card>))
+         } */}
         
         </div>
       </div>

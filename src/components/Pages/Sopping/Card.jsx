@@ -31,13 +31,13 @@ const Card = ({ product }) => {
         <p className="text-sm ">{BrandName}</p>
       </div>
       <div className="">
-       <div className="h-20 pt-2">
+       <div className="h-26 pt-2">
        <h2 className="font-semibold">{name}</h2>
         <div className="flex justify-between items-center">
           {" "}
          
-          <p>
-            <span className="text-xl font-medium">BDT{currentPrice}</span>{" "}
+          <p className="">
+            <span className="text-xl font-medium">BDT{parseFloat(currentPrice).toFixed()}</span>{" "}
             <span className="opacity-50 text-sm">BDT{price}</span>
           </p>
           <p className="text-sm">Ratings {ratings ? ratings : "No Ratings"}</p>

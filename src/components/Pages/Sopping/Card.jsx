@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Card = ({ product }) => {
-  console.log(product);
+
   const {
     coverImage,
     currentPrice,
@@ -31,7 +31,8 @@ const Card = ({ product }) => {
         <p className="text-sm ">{BrandName}</p>
       </div>
       <div className="">
-        <h2 className="font-semibold">{name}</h2>
+       <div className="h-20 pt-2">
+       <h2 className="font-semibold">{name}</h2>
         <div className="flex justify-between items-center">
           {" "}
          
@@ -39,13 +40,14 @@ const Card = ({ product }) => {
             <span className="text-xl font-medium">BDT{currentPrice}</span>{" "}
             <span className="opacity-50 text-sm">BDT{price}</span>
           </p>
-          <p className="text-sm">Ratings {ratings ? ratings : "4.5"}</p>
+          <p className="text-sm">Ratings {ratings ? ratings : "No Ratings"}</p>
         </div>
-        <div className="card-actions items-center justify-between mt-1">
-          <div className=" rounded-r-xl px-2 badge-outline bg-red-600 text-white font-medium">
+       </div>
+        <div className=" flex items-center justify-between mt-1">
+          <p className=" rounded-r-xl px-2 badge-outline bg-red-600 text-white font-medium">
             {discount}% off
-          </div>
-          <Link to={`/product-detail/${_id}`} className="badge badge-outline bg-[#8dbe3f] hover:bg-[#5B8021] hover:text-white font-medium">
+          </p>
+          <Link to={`/product-detail/${_id}`} className=" px-2  rounded-lg badge-outline bg-[#8dbe3f] hover:bg-[#5B8021] hover:text-white font-medium">
             See preview
           </Link >
         </div>

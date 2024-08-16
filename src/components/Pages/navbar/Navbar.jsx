@@ -56,7 +56,7 @@ const Navbar = () => {
           </div>
           <div className="flex flex-col md:flex-row  w-full hidden lg:block md:block gap-8">
             <NavLink
-              to={"/admin/dashboard"}
+              to={"/"}
               className=" mr-5"
             >
               Gift Cards
